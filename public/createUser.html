@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form with FormData</title>
+</head>
+<body>
+<h1>Submit Your Data</h1>
+<form id="userForm" enctype="multipart/form-data">
+    <label for="name">Name:</label>
+    <input type="text" id="name" name="name" value="jack" required><br><br>
+
+    <label for="username">Username:</label>
+    <input type="text" id="username" name="username" value="jack" required><br><br>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" name="email" value="jack@g.com" required><br><br>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" name="password" value="Jack@1234" required><br><br>
+
+    <label for="image">Image:</label>
+    <input type="file" id="image" name="image" required><br><br>
+
+    <button type="submit">Submit</button>
+</form>
+
+<script>
+	document.getElementById('userForm').addEventListener('submit', function (event) {
+		event.preventDefault(); // Prevent default form submission
+
+		const form = event.target;
+		const formData = new FormData();
+
+		formData.append("name", form.name.value);
+		formData.append("username", form.username.value);
+		formData.append("email", form.email.value);
+		formData.append("password", form.password.value);
+		formData.append("image", form.image.files[0], "369589342_351606457469373_5152027882510248081_n.jpg");
+
+		// You can now send this FormData object via an AJAX request or any other method
+		// For demonstration, let's just log the FormData to the console
+		for (let [key, value] of formData.entries()) {
+			console.log(`${key}:`, value);
+		}
+
+		// Example of sending data via fetch (uncomment to use):
+		fetch('http://localhost:7171/api/auth/register', {
+			method: 'POST',
+            headers: {
+				"Accept": "application/json"
+            },
+			body: formData
+		})
+			.then(response => response.json())
+			.then(data => console.log(data))
+			.catch(error => console.error('Error:', error));
+	});
+</script>
+</body>
+</html>
