@@ -7,7 +7,7 @@ const TaskAccessRightMiddleware = require('../middlewares/TaskAccessRightMiddlew
 require("express-group-routes");
 
 
-	router.get('/', UserMiddleware, TaskController.index);
+	router.get('/', TaskController.index);
 
 	router.get('/:id', TaskAccessRightMiddleware, TaskController.show);
 	router.post('/create', TaskController.create);
