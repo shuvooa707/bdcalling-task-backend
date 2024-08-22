@@ -6,7 +6,8 @@ const TaskAccessRightSchema = new Schema({
 
 	/*** Relationships ****/
 	task: { type: Schema.Types.ObjectId, ref: 'Task' },
-	user: { type: Schema.Types.ObjectId, ref: 'User' }
+	user: { type: Schema.Types.ObjectId, ref: 'User' },
+	accessLevel: String
 });
 
 

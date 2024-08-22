@@ -31,6 +31,11 @@ function UserService() {
 			const password = await bcrypt.hash(data.password, 8);
 
 			await UserRepository.createUser(data.name, data.username, data.email, password, imageUrl);
+		},
+
+
+		updateUser: async (req, res, next) => {
+
 		}
 	}
 }

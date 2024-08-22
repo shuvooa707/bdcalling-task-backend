@@ -22,7 +22,6 @@ function TaskController() {
 				tasks = await Task.find({
 					"_id": { $in: taskAccessRightsIds }
 				})
-				console.log(tasks)
 			} catch (e) {
 				return res.send({
 					"message": "failed",
@@ -38,7 +37,6 @@ function TaskController() {
 		/** fetch a single task **/
 		show: async (req, res, next) => {
 			let task = null;
-			console.log(req.params.id)
 			try {
 				task = await Task.findOne({"_id": req.params.id});
 			} catch (e) {

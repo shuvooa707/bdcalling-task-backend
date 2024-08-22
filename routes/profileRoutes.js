@@ -7,5 +7,6 @@ const AdminMiddleware = require('../middlewares/AdminMiddleware');
 
 /* GET users listing. */
 router.get('/get-profile', ProfileController.index);
+router.get('/profile/update', ProfileController.update);
 
 module.exports = router;

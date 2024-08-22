@@ -169,8 +169,8 @@ function TaskController() {
 			}
 
 			try {
-				task = await Task.findOne({_id: taskId});
-				user = await User.findOne({_id: userId});
+				task = await Task.findOne({ _id: taskId });
+				user = await User.findOne({ _id: userId });
 
 				if (!task || !user) {
 					return res.send({
@@ -181,7 +181,7 @@ function TaskController() {
 			} catch (err) {
 				return res.send({
 					"message": "failed",
-					"error": "something went wrong"
+					"error__": err
 				});
 			}
 
@@ -198,14 +198,10 @@ function TaskController() {
 				});
 			}
 
-			access = await TaskAccessRight.findOne({
-				task: taskId
-			});
+			access = await TaskAccessRight.findOne({ task: taskId });
 
 			if (access) {
-				await TaskAccessRight.deleteOne({
-					task: taskId
-				});
+				await TaskAccessRight.deleteOne({ task: taskId });
 			}
 
 			const taskAccessRight = await TaskAccessRight.create({

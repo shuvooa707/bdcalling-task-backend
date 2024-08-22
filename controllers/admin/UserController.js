@@ -15,17 +15,31 @@ function UserController() {
 		index: async (req, res, next) => {
 			let users = null;
 			let userDTOs = [];
+			let userWithTasks = [];
 			try {
-				users = await User.find();
-
-				for (let i = 0; i < users.length; i++) {
-					let access = await TaskAccessRight.find({ "user": users[i]._id });
-					let tasks = await Task.find({
-						"task": { $in : access.map(ar => ar.task.toString()) }
-					});
-					console.log(tasks)
-					userDTOs.push( UserDTO(users[i], tasks) );
-				}
+				users =  await User.aggregate([
+					{
+						$lookup: {
+							from: 'taskaccessrights', // The collection to join
+							localField: '_id', // Field from the input documents
+							foreignField: 'user', // Field from the documents of the "from" collection
+							as: 'taskAccessRights' // Output array field
+						}
+					},
+					{
+						$lookup: {
+							from: 'tasks',
+							localField: 'taskAccessRights.task',
+							foreignField: '_id',
+							as: 'assignedTasks'
+						}
+					}
+				]);
+				// console.log(users)
+				users.forEach(user => {
+					console.log(UserDTO(user, user.assignedTasks))
+					userDTOs.push(UserDTO(user, user.assignedTasks));
+				})
 
 				// console.log(userDTOs)
 			} catch (e) {
@@ -39,16 +53,22 @@ function UserController() {
 				"users": userDTOs
 			})
 		},
+
 		show: async (req, res, next) => {
 			let user = null;
 			try {
 				user = await User.findOne({"_id": req.params.id});
-				if (!user) {
-					return res.send({
-						"message": "failed",
-						"error": "User not found"
-					});
-				}
+				let assignedTasks = await TaskAccessRight.find({"user": req.params.id})
+					.populate('task') // Populates the task information
+					.exec();
+
+				user = UserDTO(user, assignedTasks);
+				// if (!user) {
+				// 	return res.send({
+				// 		"message": "failed",
+				// 		"error": "User not found"
+				// 	});
+				// }
 			} catch (e) {
 				return res.send({
 					"message": "failed",

@@ -8,9 +8,9 @@ const fileUpload = require('express-fileupload');
 const multer  = require('multer')
 const upload = multer({ dest: 'uploads/' })
 const cors = require('cors')
-
+const TaskAccessRight = require("./models/TaskAccessRight")
 // config .env
-require("dotenv").config();
+require("dotenv").config({ "path": "./.env" });
 
 
 const indexRouter = require('./routes/indexRoutes');
@@ -60,6 +60,16 @@ app.use('/api/admin/tasks', adminTaskRoutes);
 app.use('/api/admin/users', adminUserRoutes);
 
 
+
+app.get("/model-test/:userId", async  (req, res) => {
+	// let access = await TaskAccessRight.find();
+	const tasks = await TaskAccessRight.find({ user: req.params.userId })
+		.populate('task')
+		.exec();
+	return res.send({
+		"tasks" : tasks
+	});
+});
 
 
 app.listen(process.env.PORT || 3000, () => {

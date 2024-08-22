@@ -27,7 +27,6 @@ function ProfileController() {
 					"_id": { $in: taskAccessRightsIds },
 					"status": "pending",
 				})
-				console.log(tasks)
 			} catch (e) {
 				return res.send({
 					"message": "failed",
@@ -41,6 +40,26 @@ function ProfileController() {
 				"user": userDTO
 			})
 		},
+		update: async (req, res, next) => {
+			let token = req.headers?.authorization?.split(' ')[1];
+			let username = await JwtService.extractUsername(token);
+			let user = await User.findOne({ "username": username.data });
+
+
+			try {
+
+			} catch (e) {
+				return res.send({
+					"message": "failed",
+					"error": e
+				})
+			}
+
+
+			return res.send({
+				"message": "success"
+			})
+		}
 	}
 }
 

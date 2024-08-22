@@ -4,7 +4,7 @@ const JwtService = require("../services/JwtService");
 
 const AuthController = require('../controllers/AuthController');
 
-const uploadUserImageMiddleware = require('../middlewares/uploadUserImageMiddleware');
+const uploadUserImageMiddleware = require('../middlewares/UploadUserImageMiddleware');
 
 /* Auth Routes */
 router.post('/login', AuthController.login);

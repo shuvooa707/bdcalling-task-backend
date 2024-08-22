@@ -6,7 +6,7 @@ function UserDTO(user, tasks = []) {
 		"image": user.image,
 		"status": user.status,
 		"role": user.role,
-		"tasks": tasks
+		"assignedTasks": tasks
 	}
 }
 

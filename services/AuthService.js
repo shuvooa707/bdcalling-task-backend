@@ -8,7 +8,6 @@ function AuthService() {
 		login: async function (username, password) {
 			// req.params.username, req.params.password
 			let user = await User.findOne({"username": username});
-			console.log(username)
 			if ( !user ) {
 				return false;
 			}

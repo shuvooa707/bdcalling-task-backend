@@ -3,7 +3,6 @@ const Task = require('../models/Task');
 function TaskService() {
 	return {
 		createTask: async function (data) {
-			console.log(data)
 			return Task.create({
 				title: data.title,
 				description: data.description,
