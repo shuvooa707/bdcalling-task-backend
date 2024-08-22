@@ -2,11 +2,12 @@ var express = require('express');
 var router = express.Router();
 const TaskController = require('../controllers/TaskController');
 const AdminMiddleware = require('../middlewares/AdminMiddleware');
+const UserMiddleware = require('../middlewares/UserMiddleware');
 const TaskAccessRightMiddleware = require('../middlewares/TaskAccessRightMiddleware');
 require("express-group-routes");
 
 
-	router.get('/', AdminMiddleware, TaskController.index);
+	router.get('/', UserMiddleware, TaskController.index);
 
 	router.get('/:id', TaskAccessRightMiddleware, TaskController.show);
 	router.post('/create', TaskController.create);
